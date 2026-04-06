@@ -1,0 +1,58 @@
+<template>
+  <div class="shell">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="orb orb-c" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="shell-inner">
+      <header class="site-head">
+        <a href="/" class="brand">{profile.name}</a>
+        <nav class="site-nav" aria-label="Primary">
+          <template for:each={navRendered} for:item="link">
+            <a key={link.id} href={link.href} class={link.itemClass}>{link.label}</a>
+          </template>
+        </nav>
+      </header>
+
+      <main class="shell-main">
+        <div class="page">
+          <header class="page-head" data-reveal>
+            <h1 class="page-title">Projects</h1>
+            <p class="page-sub">Systems with clear workflows—not demo trivia.</p>
+          </header>
+
+          <ul class="project-list">
+            <template for:each={projects} for:item="project">
+              <li key={project.id} class="project-card" data-reveal>
+                <div class="project-top">
+                  <h2>{project.name}</h2>
+                  <template if:true={project.period}>
+                    <span class="badge">{project.period}</span>
+                  </template>
+                  <template if:true={project.status}>
+                    <span class="badge badge-muted">{project.status}</span>
+                  </template>
+                </div>
+                <p class="desc">{project.summary}</p>
+                <template if:true={project.bullets.length}>
+                  <ul class="bullets">
+                    <template for:each={project.bullets} for:item="b">
+                      <li key={b.id}>{b.text}</li>
+                    </template>
+                  </ul>
+                </template>
+                <p class="stack">{project.stack}</p>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </main>
+
+      <footer class="site-foot">
+        <p>Tanishk Raikwar · Salesforce Developer</p>
+        <p class="sub">Lightning Web Runtime + LWC (OSS)</p>
+      </footer>
+    </div>
+  </div>
+</template>

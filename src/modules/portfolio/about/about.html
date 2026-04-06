@@ -1,0 +1,100 @@
+<template>
+  <div class="shell">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="orb orb-c" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="shell-inner">
+      <header class="site-head">
+        <a href="/" class="brand">{profile.name}</a>
+        <nav class="site-nav" aria-label="Primary">
+          <template for:each={navRendered} for:item="link">
+            <a key={link.id} href={link.href} class={link.itemClass}>{link.label}</a>
+          </template>
+        </nav>
+      </header>
+
+      <main class="shell-main">
+        <div class="page">
+          <header class="page-head" data-reveal>
+            <h1 class="page-title">About</h1>
+            <p class="page-sub">Background, how I work, and where I've shipped.</p>
+          </header>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">Background</h2>
+            <div class="prose">
+              <p>{bio.background}</p>
+              <p>{bio.focus}</p>
+              <p>{bio.direction}</p>
+            </div>
+          </section>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">How I build</h2>
+            <ul class="approach-list">
+              <template for:each={approach} for:item="row">
+                <li key={row.id} class="approach-item">
+                  <h3>{row.title}</h3>
+                  <p>{row.body}</p>
+                </li>
+              </template>
+            </ul>
+            <h3 class="mini-title">Principles</h3>
+            <ul class="simple-list">
+              <template for:each={philosophy} for:item="line">
+                <li key={line.id}>{line.text}</li>
+              </template>
+            </ul>
+          </section>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">Problem → outcome</h2>
+            <ul class="problem-mini">
+              <template for:each={problemExamples} for:item="ex">
+                <li key={ex.id}>
+                  <strong>{ex.problem}</strong>
+                  <span>{ex.solution} → {ex.outcome}</span>
+                </li>
+              </template>
+            </ul>
+          </section>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">Experience</h2>
+            <ul class="exp-list">
+              <template for:each={experience} for:item="job">
+                <li key={job.id} class="exp-card">
+                  <div class="exp-top">
+                    <h3>{job.role}</h3>
+                    <p class="exp-meta">{job.company} · {job.period}</p>
+                  </div>
+                  <ul class="simple-list tight">
+                    <template for:each={job.highlights} for:item="h">
+                      <li key={h.id}>{h.text}</li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+            </ul>
+          </section>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">Achievements</h2>
+            <ul class="simple-list">
+              <template for:each={achievements} for:item="ac">
+                <li key={ac.id}>{ac.text}</li>
+              </template>
+            </ul>
+          </section>
+        </div>
+      </main>
+
+      <footer class="site-foot">
+        <p>Tanishk Raikwar · Salesforce Developer</p>
+        <p class="sub">Lightning Web Runtime + LWC (OSS)</p>
+      </footer>
+    </div>
+  </div>
+</template>

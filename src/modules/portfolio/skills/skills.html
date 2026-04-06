@@ -1,0 +1,55 @@
+<template>
+  <div class="shell">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="orb orb-c" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="shell-inner">
+      <header class="site-head">
+        <a href="/" class="brand">{profile.name}</a>
+        <nav class="site-nav" aria-label="Primary">
+          <template for:each={navRendered} for:item="link">
+            <a key={link.id} href={link.href} class={link.itemClass}>{link.label}</a>
+          </template>
+        </nav>
+      </header>
+
+      <main class="shell-main">
+        <div class="page">
+          <header class="page-head" data-reveal>
+            <h1 class="page-title">Skills</h1>
+            <p class="page-sub">Tools and tech I use in real work—with recognizable logos.</p>
+          </header>
+
+          <template for:each={skillGroups} for:item="group">
+            <section key={group.id} class="group" data-reveal>
+              <h2 class="group-title">{group.title}</h2>
+              <ul class="skill-cards">
+                <template for:each={group.items} for:item="item">
+                  <li key={item.id} class="skill-card">
+                    <img
+                      class="skill-icon"
+                      src={item.icon}
+                      alt=""
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                    <span class="skill-label">{item.label}</span>
+                  </li>
+                </template>
+              </ul>
+            </section>
+          </template>
+        </div>
+      </main>
+
+      <footer class="site-foot">
+        <p>Tanishk Raikwar · Salesforce Developer</p>
+        <p class="sub">Lightning Web Runtime + LWC (OSS)</p>
+      </footer>
+    </div>
+  </div>
+</template>

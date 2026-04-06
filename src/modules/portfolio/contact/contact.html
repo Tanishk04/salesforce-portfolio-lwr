@@ -1,0 +1,62 @@
+<template>
+  <div class="shell">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="orb orb-c" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="shell-inner">
+      <header class="site-head">
+        <a href="/" class="brand">{profile.name}</a>
+        <nav class="site-nav" aria-label="Primary">
+          <template for:each={navRendered} for:item="link">
+            <a key={link.id} href={link.href} class={link.itemClass}>{link.label}</a>
+          </template>
+        </nav>
+      </header>
+
+      <main class="shell-main">
+        <div class="page">
+          <header class="page-head" data-reveal>
+            <h1 class="page-title">Contact</h1>
+            <p class="page-sub">Open to Salesforce engineering and platform work.</p>
+          </header>
+
+          <section class="block" data-reveal>
+            <div class="contact-cards">
+              <a class="contact-card" href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+                <span class="cc-label">LinkedIn</span>
+                <span class="cc-arrow">↗</span>
+              </a>
+              <a class="contact-card" href={contact.github} target="_blank" rel="noopener noreferrer">
+                <span class="cc-label">GitHub</span>
+                <span class="cc-arrow">↗</span>
+              </a>
+              <a class="contact-card" href={mailtoHref}>
+                <span class="cc-label">Email</span>
+                <span class="cc-val">{contact.email}</span>
+              </a>
+              <a class="contact-card" href={telHref}>
+                <span class="cc-label">Phone</span>
+                <span class="cc-val">{profile.phone}</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="block" data-reveal>
+            <h2 class="block-title">Career direction</h2>
+            <div class="goal-box">
+              <p><span class="tag">Short-term</span>{careerGoals.shortTerm}</p>
+              <p><span class="tag">Long-term</span>{careerGoals.longTerm}</p>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="site-foot">
+        <p>Tanishk Raikwar · Salesforce Developer</p>
+        <p class="sub">Lightning Web Runtime + LWC (OSS)</p>
+      </footer>
+    </div>
+  </div>
+</template>

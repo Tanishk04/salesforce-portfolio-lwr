@@ -1,0 +1,306 @@
+﻿<template>
+  <div class={shellClass}>
+    <div class="launch-screen" aria-hidden="true">
+      <div class="launch-screen__mark">
+        <span class="launch-screen__line"></span>
+        <span class="launch-screen__name signature-name signature-name--launch">{profile.name}</span>
+      </div>
+    </div>
+
+    <div class="shell-inner">
+      <header class="site-head">
+        <a href="/" class="brand signature-name" data-route="/" onclick={handleRouteClick}>{profile.name}</a>
+        <nav class="side-dock" aria-label="Primary">
+          <template for:each={navRendered} for:item="link">
+            <a
+              key={link.id}
+              href={link.href}
+              class={link.itemClass}
+              data-route={link.href}
+              data-key={link.key}
+              aria-current={link.ariaCurrent}
+              onclick={handleRouteClick}
+            >
+              <span class="nav-icon" aria-hidden="true"></span>
+              <span class="nav-text">{link.label}</span>
+            </a>
+          </template>
+        </nav>
+      </header>
+
+      <main class="shell-main">
+        <div class={pageStageClass}>
+          <template if:true={isHomePage}>
+            <div class="page home-page">
+              <section class="landing-hero breakout">
+                <div class="landing-hero__inner">
+                  <div class="landing-copy" data-reveal>
+                    <p class="landing-badge">Salesforce, Python, data, and tools</p>
+                    <h1 class="landing-title">Simple systems, useful automation, and steady growth.</h1>
+                    <p class="landing-lead">{profile.tagline}</p>
+                    <div class="landing-actions">
+                      <a class="btn btn-primary" href="/about" data-route="/about" onclick={handleRouteClick}>About me</a>
+                      <template if:true={hasResumeLink}>
+                        <a class="btn btn-secondary" href={resumeHref} target="_blank" rel="noopener noreferrer">Resume</a>
+                      </template>
+                      <a class="btn btn-secondary" href="/contact" data-route="/contact" onclick={handleRouteClick}>Contact</a>
+                    </div>
+                    <div class="landing-highlights">
+                      <template for:each={heroHighlights} for:item="item">
+                        <span key={item} class="highlight-pill">{item}</span>
+                      </template>
+                    </div>
+                  </div>
+
+                  <div class="landing-visual" data-reveal>
+                    <div class="preview-panel preview-panel--main">
+                      <div class="preview-panel__head">
+                        <span class="window-dot"></span>
+                        <span class="window-dot"></span>
+                        <span class="window-dot"></span>
+                        <span class="window-label">Current snapshot</span>
+                      </div>
+                      <div class="signal-grid">
+                        <template for:each={heroStats} for:item="stat">
+                          <article key={stat.id} class="signal-card">
+                            <p class="signal-label">{stat.label}</p>
+                            <h2>{stat.value}</h2>
+                            <p>{stat.meta}</p>
+                          </article>
+                        </template>
+                      </div>
+                      <div class="code-strip">
+                        <span class="code-chip">Salesforce</span>
+                        <span class="code-chip">Python</span>
+                        <span class="code-chip">REST APIs</span>
+                        <span class="code-chip">ETL</span>
+                      </div>
+                    </div>
+                    <div class="tech-stage" aria-hidden="true" onmousemove={handleTechFieldMove} onmouseleave={handleTechFieldLeave}>
+                      <template for:each={heroFloaters} for:item="item">
+                        <span key={item.id} class={item.itemClass} title={item.label}>
+                          <img class="tech-badge__icon" src={item.icon} alt="" loading="lazy" referrerpolicy="no-referrer" />
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </template>
+
+          <template if:true={isAboutPage}>
+            <div class="page inner-page">
+              <header class="page-head" data-reveal>
+                <p class="section-kicker">About</p>
+                <h1 class="page-title">A simple overview.</h1>
+                <p class="page-sub">What I do now, what I enjoy learning, and where I want to grow.</p>
+              </header>
+
+              <section class="block" data-reveal>
+                <p class="section-kicker">Overview</p>
+                <h2 class="block-title">A simple portfolio built around what I actually do and what I want to keep learning.</h2>
+                <div class="insight-grid">
+                  <template for:each={homeFocusCards} for:item="card">
+                    <article key={card.id} class="insight-card">
+                      <p class="insight-card__eyebrow">{card.eyebrow}</p>
+                      <h3>{card.title}</h3>
+                      <p>{card.body}</p>
+                    </article>
+                  </template>
+                </div>
+              </section>
+
+              <section class="block" data-reveal>
+                <h2 class="block-title">Background</h2>
+                <div class="prose">
+                  <p>{bio.background}</p>
+                  <p>{bio.focus}</p>
+                  <p>{bio.direction}</p>
+                </div>
+              </section>
+
+              <section class="block" data-reveal>
+                <p class="section-kicker">How I think</p>
+                <h2 class="block-title">I prefer clear work that solves a real problem and stays easy to improve later.</h2>
+                <div class="process-list">
+                  <template for:each={processCards} for:item="card">
+                    <article key={card.id} class="process-card">
+                      <span class="process-number">{card.number}</span>
+                      <div>
+                        <h3>{card.title}</h3>
+                        <p>{card.body}</p>
+                      </div>
+                    </article>
+                  </template>
+                </div>
+              </section>
+
+              <section class="block" data-reveal>
+                <h2 class="block-title">Problem-solving style</h2>
+                <ul class="problem-mini">
+                  <template for:each={problemExamples} for:item="example">
+                    <li key={example.id}>
+                      <strong>{example.problem}</strong>
+                      <span>{example.solution} to {example.outcome}</span>
+                    </li>
+                  </template>
+                </ul>
+              </section>
+
+              <section class="block" data-reveal>
+                <h2 class="block-title">Current focus</h2>
+                <ul class="exp-list">
+                  <template for:each={experience} for:item="job">
+                    <li key={job.id} class="exp-card">
+                      <div class="exp-top">
+                        <h3>{job.role}</h3>
+                        <p class="exp-meta">{job.company} - {job.period}</p>
+                      </div>
+                      <ul class="simple-list tight">
+                        <template for:each={job.highlights} for:item="highlight">
+                          <li key={highlight.id}>{highlight.text}</li>
+                        </template>
+                      </ul>
+                    </li>
+                  </template>
+                </ul>
+              </section>
+
+              <section class="block" data-reveal>
+                <h2 class="block-title">Right now</h2>
+                <ul class="simple-list">
+                  <template for:each={achievements} for:item="achievement">
+                    <li key={achievement.id}>{achievement.text}</li>
+                  </template>
+                </ul>
+              </section>
+            </div>
+          </template>
+
+          <template if:true={isSkillsPage}>
+            <div class="page">
+              <header class="page-head" data-reveal>
+                <h1 class="page-title">What I work with</h1>
+                <p class="page-sub">Salesforce first, with growing interest in backend, data, cloud, and useful tooling.</p>
+              </header>
+
+              <section class="service-grid" data-reveal>
+                <template for:each={serviceCards} for:item="card">
+                  <article key={card.id} class="service-card">
+                    <h2>{card.title}</h2>
+                    <p>{card.body}</p>
+                  </article>
+                </template>
+              </section>
+
+              <template for:each={skillGroups} for:item="group">
+                <section key={group.id} class="group" data-reveal>
+                  <h2 class="group-title">{group.title}</h2>
+                  <ul class="skill-cards">
+                    <template for:each={group.items} for:item="item">
+                      <li key={item.id} class="skill-card">
+                        <img
+                          class="skill-icon"
+                          src={item.icon}
+                          alt=""
+                          width="40"
+                          height="40"
+                          loading="lazy"
+                          referrerpolicy="no-referrer"
+                        />
+                        <span class="skill-label">{item.label}</span>
+                      </li>
+                    </template>
+                  </ul>
+                </section>
+              </template>
+            </div>
+          </template>
+
+          <template if:true={isProjectsPage}>
+            <div class="page">
+              <header class="page-head" data-reveal>
+                <h1 class="page-title">Projects</h1>
+                <p class="page-sub">Placeholder slots for work I want to present properly later.</p>
+              </header>
+
+              <div class="project-filters" data-reveal>
+                <template for:each={projectFilters} for:item="filter">
+                  <span key={filter} class="filter-pill">{filter}</span>
+                </template>
+              </div>
+
+              <ul class="project-list">
+                <template for:each={projects} for:item="project">
+                  <li key={project.id} class="project-card" data-reveal>
+                    <div class="project-top">
+                      <h2>{project.name}</h2>
+                      <template if:true={project.period}>
+                        <span class="badge">{project.period}</span>
+                      </template>
+                      <template if:true={project.status}>
+                        <span class="badge badge-muted">{project.status}</span>
+                      </template>
+                    </div>
+                    <p class="desc">{project.summary}</p>
+                    <template if:true={project.bullets.length}>
+                      <ul class="bullets">
+                        <template for:each={project.bullets} for:item="bullet">
+                          <li key={bullet.id}>{bullet.text}</li>
+                        </template>
+                      </ul>
+                    </template>
+                    <p class="stack">{project.stack}</p>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+
+          <template if:true={isContactPage}>
+            <div class="page">
+              <header class="page-head" data-reveal>
+                <h1 class="page-title">Contact</h1>
+                <p class="page-sub">A cleaner place to reach out for opportunities, collaboration, and practical engineering conversations.</p>
+              </header>
+
+              <section class="block contact-spotlight" data-reveal>
+                <div class="contact-cards contact-cards--featured">
+                  <template for:each={contactMethods} for:item="item">
+                    <a key={item.id} class={item.cardClass} href={item.href} target={item.target} rel={item.rel}>
+                      <span class={item.iconClass} aria-hidden="true"></span>
+                      <span class="contact-card__body">
+                        <span class="cc-label">{item.label}</span>
+                        <strong class="contact-card__value">{item.value}</strong>
+                        <span class="contact-card__meta">{item.meta}</span>
+                      </span>
+                      <span class="cc-arrow">{item.cta}</span>
+                    </a>
+                  </template>
+                </div>
+              </section>
+
+              <section class="block" data-reveal>
+                <p class="section-kicker">Worth reaching out for</p>
+                <div class="insight-grid contact-topic-grid">
+                  <template for:each={contactTopics} for:item="item">
+                    <article key={item.id} class="insight-card contact-topic-card">
+                      <h3>{item.title}</h3>
+                      <p>{item.body}</p>
+                    </article>
+                  </template>
+                </div>
+              </section>
+            </div>
+          </template>
+        </div>
+      </main>
+
+      <footer class="site-foot">
+        <p>Tanishk Raikwar</p>
+        <p class="sub">Salesforce, Python, data, and tools</p>
+      </footer>
+    </div>
+  </div>
+</template>

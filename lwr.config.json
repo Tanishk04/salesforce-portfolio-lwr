@@ -1,0 +1,56 @@
+{
+  "lwc": { "modules": [{ "dir": "$rootDir/src/modules" }] },
+  "moduleProviders": [
+    "@lwrjs/app-service/moduleProvider",
+    "@lwrjs/gate-module-provider",
+    "@lwrjs/router/module-provider",
+    "$rootDir/tools/lwr-framework-js-module-provider.js",
+    "@lwrjs/lwc-module-provider",
+    "@lwrjs/npm-module-provider",
+    "@lwrjs/module-registry/externals-module-provider"
+  ],
+  "routes": [
+    {
+      "id": "home",
+      "path": "/",
+      "rootComponent": "portfolio/app",
+      "layoutTemplate": "$rootDir/src/layouts/root.html"
+    },
+    {
+      "id": "about",
+      "path": "/about",
+      "rootComponent": "portfolio/app",
+      "layoutTemplate": "$rootDir/src/layouts/root.html"
+    },
+    {
+      "id": "skills",
+      "path": "/skills",
+      "rootComponent": "portfolio/app",
+      "layoutTemplate": "$rootDir/src/layouts/root.html"
+    },
+    {
+      "id": "projects",
+      "path": "/projects",
+      "rootComponent": "portfolio/app",
+      "layoutTemplate": "$rootDir/src/layouts/root.html"
+    },
+    {
+      "id": "contact",
+      "path": "/contact",
+      "rootComponent": "portfolio/app",
+      "layoutTemplate": "$rootDir/src/layouts/root.html"
+    }
+  ],
+  "assets": [
+    {
+      "alias": "assetsDir",
+      "dir": "$rootDir/src/assets",
+      "urlPath": "/public/assets"
+    },
+    {
+      "alias": "favicon",
+      "file": "$rootDir/src/assets/favicon.ico",
+      "urlPath": "/favicon.ico"
+    }
+  ]
+}
