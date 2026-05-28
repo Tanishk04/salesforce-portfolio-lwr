@@ -1,14 +1,18 @@
 ﻿import { LightningElement } from 'lwc';
 import {
   about as bio,
-  achievements,
+  categories,
   contact,
-  experience,
+  heroSnapshot,
   navLinks,
+  otherCertifications,
+  principles,
   problemExamples,
   profile,
   projects,
-  skillGroups,
+  rightNow,
+  salesforceCertifications,
+  trailheadProfile,
 } from 'portfolio/data';
 import { applyDocumentShell, setDocumentTitle } from 'portfolio/utils';
 
@@ -25,16 +29,18 @@ export default class App extends LightningElement {
   profile = profile;
   contact = contact;
   bio = bio;
-  experience = experience;
-  achievements = achievements;
   problemExamples = problemExamples;
-  skillGroups = skillGroups;
+  principles = principles;
+  rightNow = rightNow;
   projects = projects;
+  heroSnapshot = heroSnapshot;
+  categories = categories;
+  trailheadProfile = trailheadProfile;
+  salesforceCertifications = salesforceCertifications;
+  otherCertifications = otherCertifications;
   currentPage = DEFAULT_PAGE;
   isReady = false;
   pageStageState = 'is-visible';
-
-  heroHighlights = ['Salesforce', 'Python', 'Backend', 'Data', 'Agentic Tools'];
 
   heroFloaterBase = [
     {
@@ -56,52 +62,7 @@ export default class App extends LightningElement {
     { id: 'tf13', label: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
   ];
 
-  heroStats = [
-    {
-      id: 'hs1',
-      label: 'Current work',
-      value: 'Salesforce projects',
-      meta: 'Automations, workflows, and scalable solutions',
-    },
-    {
-      id: 'hs2',
-      label: 'Growing into',
-      value: 'Backend and data',
-      meta: 'REST APIs, ETL thinking, and cloud workflows',
-    },
-    {
-      id: 'hs3',
-      label: 'What I enjoy',
-      value: 'Tools and agentic systems',
-      meta: 'Practical experiments that improve how work gets done',
-    },
-  ];
-
-  serviceCards = [
-    {
-      id: 'svc1',
-      title: 'Salesforce development',
-      body: 'Building and testing automations, improving workflows, and shaping solutions that are practical to use and maintain.',
-    },
-    {
-      id: 'svc2',
-      title: 'Backend and data interest',
-      body: 'Exploring APIs, ETL thinking, and data-driven systems that connect cleanly to real product and business needs.',
-    },
-    {
-      id: 'svc3',
-      title: 'Tools and workflows',
-      body: 'Using useful tooling, including agentic workflows, to move faster while keeping the work simple and understandable.',
-    },
-  ];
-
-  projectFilters = ['Placeholder', 'Salesforce', 'Python', 'Data', 'Tools'];
-
-  socialCards = [
-    { id: 'sc1', label: 'Email', value: 'tr15042001@gmail.com', href: 'mailto:tr15042001@gmail.com' },
-    { id: 'sc2', label: 'LinkedIn', value: 'Tanishk Raikwar', href: 'https://www.linkedin.com/in/tanishk-raikwar-a635201a6/' },
-    { id: 'sc3', label: 'GitHub', value: 'Tanishk04', href: 'https://github.com/Tanishk04/Tanishk04' },
-  ];
+  projectFilters = ['All', 'Salesforce', 'Backend', 'Data', 'Tools'];
 
   _launchTimer;
   _routeTimer;
@@ -134,11 +95,12 @@ export default class App extends LightningElement {
   }
 
   renderedCallback() {
-    if (this.isHomePage) {
+    // Tech-stage may live on any page now (currently Skills).
+    if (this.template.querySelector('.tech-stage')) {
       this.initTechField();
-      return;
+    } else {
+      this.teardownTechField();
     }
-    this.teardownTechField();
   }
 
   handlePopState = () => {
@@ -218,7 +180,7 @@ export default class App extends LightningElement {
         const clear = placed.every((item) => Math.hypot(item.x - x, item.y - y) >= minDistance);
         if (clear) {
           const angle = seed * 2.3;
-          const speed = 0.38 + ((Math.sin(seed) + 1) / 2) * 0.34;
+          const speed = 0.65 + ((Math.sin(seed) + 1) / 2) * 0.55;
           next = {
             x,
             y,
@@ -234,8 +196,8 @@ export default class App extends LightningElement {
         next = {
           x: padding + (index % 4) * (iconSize * 1.2),
           y: padding + Math.floor(index / 4) * (iconSize * 1.1),
-          vx: Math.cos(angle) * 0.42,
-          vy: Math.sin(angle) * 0.42,
+          vx: Math.cos(angle) * 0.75,
+          vy: Math.sin(angle) * 0.75,
         };
       }
 
@@ -271,9 +233,9 @@ export default class App extends LightningElement {
     const centerY = maxY / 2 + iconSize / 2;
 
     this._techState.forEach((state, index) => {
-      const drift = performance.now() * 0.00012 + index;
-      state.vx += Math.cos(drift) * 0.012;
-      state.vy += Math.sin(drift * 1.2) * 0.012;
+      const drift = performance.now() * 0.00018 + index;
+      state.vx += Math.cos(drift) * 0.022;
+      state.vy += Math.sin(drift * 1.2) * 0.022;
 
       const nodeCenterX = state.x + iconSize / 2;
       const nodeCenterY = state.y + iconSize / 2;
@@ -285,13 +247,13 @@ export default class App extends LightningElement {
         const dy = nodeCenterY - this._techPointer.y;
         const distance = Math.hypot(dx, dy) || 1;
         const influence = Math.max(0, 110 - distance) / 110;
-        const push = influence * 0.8;
+        const push = influence * 1.1;
         state.vx += (dx / distance) * push;
         state.vy += (dy / distance) * push;
       }
 
-      state.vx = Math.max(-1.3, Math.min(1.3, state.vx * 0.996));
-      state.vy = Math.max(-1.3, Math.min(1.3, state.vy * 0.996));
+      state.vx = Math.max(-2.1, Math.min(2.1, state.vx * 0.997));
+      state.vy = Math.max(-2.1, Math.min(2.1, state.vy * 0.997));
       state.x += state.vx;
       state.y += state.vy;
 
@@ -375,11 +337,19 @@ export default class App extends LightningElement {
   }
 
   get navRendered() {
-    return navLinks.map((link) => ({
-      ...link,
-      itemClass: this.currentPage === link.key ? 'nav-link is-active' : 'nav-link',
-      ariaCurrent: this.currentPage === link.key ? 'page' : null,
-    }));
+    return navLinks.map((link) => {
+      const isActive = this.currentPage === link.key;
+      const classes = ['nav-link'];
+      if (link.cta) classes.push('is-cta');
+      if (isActive) classes.push('is-active');
+      return {
+        ...link,
+        itemClass: classes.join(' '),
+        ariaCurrent: isActive ? 'page' : null,
+        ariaLabel: link.cta ? `${link.label} — get in touch` : link.label,
+        navText: link.cta ? `${link.label} →` : link.label,
+      };
+    });
   }
 
   get shellClass() {
@@ -407,121 +377,64 @@ export default class App extends LightningElement {
     return Boolean(this.resumeHref);
   }
 
-  get contactMethods() {
-    return [
-      {
-        id: 'cm1',
-        label: 'LinkedIn',
-        value: 'Connect professionally',
-        meta: 'Best for opportunities, introductions, and longer professional conversations.',
-        href: this.contact.linkedin,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        cta: 'Open profile',
-        cardClass: 'contact-card contact-card--featured contact-card--linkedin',
-        iconClass: 'contact-card__icon contact-card__icon--linkedin',
-      },
-      {
-        id: 'cm2',
-        label: 'GitHub',
-        value: 'See my profile',
-        meta: 'A better place to look at my public work, experiments, and code presence.',
-        href: this.contact.github,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        cta: 'View GitHub',
-        cardClass: 'contact-card contact-card--featured contact-card--github',
-        iconClass: 'contact-card__icon contact-card__icon--github',
-      },
-      {
-        id: 'cm3',
-        label: 'Email',
-        value: this.contact.email,
-        meta: 'The best option for direct messages, project discussion, and thoughtful follow-ups.',
-        href: this.mailtoHref,
-        target: null,
-        rel: null,
-        cta: 'Send email',
-        cardClass: 'contact-card contact-card--featured contact-card--email',
-        iconClass: 'contact-card__icon contact-card__icon--email',
-      },
-      {
-        id: 'cm4',
-        label: 'Phone',
-        value: this.profile.phone,
-        meta: 'Useful for quick coordination once we are already in touch.',
-        href: this.telHref,
-        target: null,
-        rel: null,
-        cta: 'Call',
-        cardClass: 'contact-card contact-card--featured contact-card--phone',
-        iconClass: 'contact-card__icon contact-card__icon--phone',
-      },
-    ];
+  get githubHandle() {
+    return (this.contact.github || '').replace(/\/+$/, '').split('/').pop() || 'Tanishk04';
   }
 
-  get contactTopics() {
-    return [
-      {
-        id: 'ct1',
-        title: 'Salesforce workflows',
-        body: 'Reach out if the conversation is around automation, workflow improvement, or making an existing process cleaner and easier to maintain.',
-      },
-      {
-        id: 'ct2',
-        title: 'Backend and data thinking',
-        body: 'I am always interested in discussing APIs, cleaner data flow, ETL ideas, and practical ways to make systems easier to understand.',
-      },
-      {
-        id: 'ct3',
-        title: 'Tools and experiments',
-        body: 'If you like working with useful tooling, AI-assisted workflows, or agentic systems, that is also a great reason to start a conversation.',
-      },
-    ];
+  get hasTrailheadLink() {
+    return Boolean(this.trailheadProfile?.url);
   }
 
-  get homeFocusCards() {
-    return [
-      {
-        id: 'hf1',
-        eyebrow: 'Foundation',
-        title: 'Software fundamentals first',
-        body: 'Computer Science and Engineering graduate with a strong base in software development.',
-      },
-      {
-        id: 'hf2',
-        eyebrow: 'Current focus',
-        title: 'Salesforce work with real impact',
-        body: 'Working on Salesforce projects with automation, workflow improvement, and scalable solutions.',
-      },
-      {
-        id: 'hf3',
-        eyebrow: 'What drives me',
-        title: 'Tools, systems, and problem-solving',
-        body: 'Interested in backend, data, DevOps, and practical tools that make real work easier.',
-      },
-    ];
+  get hasOtherCertifications() {
+    return Array.isArray(this.otherCertifications) && this.otherCertifications.length > 0;
   }
 
-  get processCards() {
+  get salesforceCertList() {
+    return (this.salesforceCertifications || []).map((c) => ({
+      ...c,
+      cardClass: c.pending ? 'cert-card cert-card--pending' : 'cert-card',
+      hasUrl: Boolean(c.url),
+    }));
+  }
+
+  get otherCertList() {
+    return (this.otherCertifications || []).map((c) => ({
+      ...c,
+      cardClass: c.pending ? 'cert-card cert-card--pending' : 'cert-card',
+      hasUrl: Boolean(c.url),
+    }));
+  }
+
+  get recruiterSnapshot() {
     return [
       {
-        id: 'pc1',
-        number: '01',
-        title: 'Understand the problem',
-        body: 'Start from the workflow, the friction, and what should become simpler for the people using the system.',
+        id: 'hr1',
+        kicker: 'Role focus',
+        items: [
+          'Salesforce Developer / QA Engineer',
+          'Apex · LWC · Flows · SOQL',
+          'Open to Salesforce engineering roles',
+        ],
       },
       {
-        id: 'pc2',
-        number: '02',
-        title: 'Keep the system clear',
-        body: 'Prefer data flow, automation, and implementation choices that stay readable and easy to improve later.',
+        id: 'hr2',
+        kicker: 'Logistics',
+        items: [
+          'Ready to relocate · open to remote',
+          'Time zone: IST (UTC+5:30)',
+          'Currently employed · notice negotiable',
+          'B.Tech, Computer Science Engineering · 2020–24',
+        ],
       },
       {
-        id: 'pc3',
-        number: '03',
-        title: 'Keep learning while building',
-        body: 'Use each project to grow deeper in Salesforce while expanding into backend, data, and tools.',
+        id: 'hr3',
+        kicker: 'What I bring',
+        items: [
+          'Shipping Salesforce work in production since Aug 2024',
+          '3 Salesforce certs (Platform Dev · Agentforce · Data 360)',
+          'Trailhead: 92 badges · 142,675 points · 3 superbadges',
+          '250+ LeetCode · Hacktoberfest 2023 · Star of the Month',
+        ],
       },
     ];
   }
@@ -531,6 +444,60 @@ export default class App extends LightningElement {
       ...item,
       itemClass: `tech-badge tech-badge--${index + 1}`,
     }));
+  }
+
+  get bioJsonRows() {
+    const m = this.bio.meta;
+    const stack = '[' + m.primary_stack.map((s) => `"${s}"`).join(', ') + ']';
+    const entries = [
+      ['location', `"${m.location}"`],
+      ['role', `"${m.role}"`],
+      ['designation', `"${m.designation}"`],
+      ['company', `"${m.company}"`],
+      ['education', `"${m.education}"`],
+      ['coding_since', String(m.coding_since)],
+      ['primary_stack', stack],
+      ['open_to_work', String(m.open_to_work)],
+      ['updated', `"${m.updated}"`],
+    ];
+    return entries.map(([k, v], i) => ({
+      id: `br${i}`,
+      key: `"${k}"`,
+      val: v,
+      isLast: i === entries.length - 1,
+    }));
+  }
+
+  get nowJsonRows() {
+    const n = this.heroSnapshot.now;
+    const entries = [
+      ['shipping', n.shipping],
+      ['learning', n.learning],
+      ['exploring', n.exploring],
+      ['updated', n.updated],
+    ];
+    return entries.map(([k, v], i) => ({
+      id: `jr${i}`,
+      key: `"${k}"`,
+      val: `"${v}"`,
+      isLast: i === entries.length - 1,
+    }));
+  }
+
+  get heroH1Pre() {
+    return 'Salesforce in production.';
+  }
+
+  get heroH1Accent() {
+    return 'AI in exploration.';
+  }
+
+  get heroH1Post() {
+    return '';
+  }
+
+  get heroLead() {
+    return 'Apex, LWC, Flows, Aura, and integrations by day — AI agents, MCP servers, RAG patterns, and system design on the side, figuring out where they actually pay off.';
   }
 
   get isHomePage() {

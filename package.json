@@ -22,6 +22,7 @@
     "lwr": "^0.22.12"
   },
   "devDependencies": {
+    "playwright": "^1.60.0",
     "rimraf": "^6.0.1"
   },
   "engines": {

@@ -1,15 +1,10 @@
 ﻿<template>
   <div class={shellClass}>
-    <div class="launch-screen" aria-hidden="true">
-      <div class="launch-screen__mark">
-        <span class="launch-screen__line"></span>
-        <span class="launch-screen__name signature-name signature-name--launch">{profile.name}</span>
-      </div>
-    </div>
-
     <div class="shell-inner">
       <header class="site-head">
-        <a href="/" class="brand signature-name" data-route="/" onclick={handleRouteClick}>{profile.name}</a>
+        <a href="/" class="brand" data-route="/" onclick={handleRouteClick} aria-label="Home — Tanishk Raikwar">
+          <span>tanishk raikwar</span><span class="dot">.</span>
+        </a>
         <nav class="side-dock" aria-label="Primary">
           <template for:each={navRendered} for:item="link">
             <a
@@ -19,11 +14,9 @@
               data-route={link.href}
               data-key={link.key}
               aria-current={link.ariaCurrent}
+              aria-label={link.ariaLabel}
               onclick={handleRouteClick}
-            >
-              <span class="nav-icon" aria-hidden="true"></span>
-              <span class="nav-text">{link.label}</span>
-            </a>
+            >{link.navText}</a>
           </template>
         </nav>
       </header>
@@ -32,56 +25,63 @@
         <div class={pageStageClass}>
           <template if:true={isHomePage}>
             <div class="page home-page">
-              <section class="landing-hero breakout">
-                <div class="landing-hero__inner">
-                  <div class="landing-copy" data-reveal>
-                    <p class="landing-badge">Salesforce, Python, data, and tools</p>
-                    <h1 class="landing-title">Simple systems, useful automation, and steady growth.</h1>
-                    <p class="landing-lead">{profile.tagline}</p>
-                    <div class="landing-actions">
-                      <a class="btn btn-primary" href="/about" data-route="/about" onclick={handleRouteClick}>About me</a>
-                      <template if:true={hasResumeLink}>
-                        <a class="btn btn-secondary" href={resumeHref} target="_blank" rel="noopener noreferrer">Resume</a>
-                      </template>
-                      <a class="btn btn-secondary" href="/contact" data-route="/contact" onclick={handleRouteClick}>Contact</a>
-                    </div>
-                    <div class="landing-highlights">
-                      <template for:each={heroHighlights} for:item="item">
-                        <span key={item} class="highlight-pill">{item}</span>
-                      </template>
-                    </div>
-                  </div>
+              <section class="hero hero-c" data-reveal>
+                <div class="hero-left">
+                  <p class="kicker">
+                    <span class="tag">SF DEV</span>
+                    <span class="sep">·</span>
+                    <span>cs engineer, india</span>
+                  </p>
+                  <h1 class="hero-h1">
+                    {heroH1Pre}<br />
+                    <span class="accent">{heroH1Accent}</span> {heroH1Post}
+                  </h1>
+                  <p class="hero-lead">{heroLead}</p>
 
-                  <div class="landing-visual" data-reveal>
-                    <div class="preview-panel preview-panel--main">
-                      <div class="preview-panel__head">
-                        <span class="window-dot"></span>
-                        <span class="window-dot"></span>
-                        <span class="window-dot"></span>
-                        <span class="window-label">Current snapshot</span>
-                      </div>
-                      <div class="signal-grid">
-                        <template for:each={heroStats} for:item="stat">
-                          <article key={stat.id} class="signal-card">
-                            <p class="signal-label">{stat.label}</p>
-                            <h2>{stat.value}</h2>
-                            <p>{stat.meta}</p>
-                          </article>
-                        </template>
-                      </div>
-                      <div class="code-strip">
-                        <span class="code-chip">Salesforce</span>
-                        <span class="code-chip">Python</span>
-                        <span class="code-chip">REST APIs</span>
-                        <span class="code-chip">ETL</span>
-                      </div>
+                  <div class="hero-ctas">
+                    <a class="btn btn-primary" href="/projects" data-route="/projects" onclick={handleRouteClick}>Browse projects →</a>
+                    <template if:true={hasResumeLink}>
+                      <a class="btn btn-ghost" href={resumeHref} target="_blank" rel="noopener noreferrer">Resume</a>
+                    </template>
+                    <a class="btn btn-ghost" href="/contact" data-route="/contact" onclick={handleRouteClick}>Get in touch</a>
+                  </div>
+                </div>
+
+                <div class="hero-right">
+                  <div class="term" role="img" aria-label="Terminal showing current focus snapshot">
+                    <div class="term-bar">
+                      <span class="term-dot term-dot--r"></span>
+                      <span class="term-dot term-dot--y"></span>
+                      <span class="term-dot term-dot--g"></span>
+                      <span class="term-title">~/portfolio</span>
                     </div>
-                    <div class="tech-stage" aria-hidden="true" onmousemove={handleTechFieldMove} onmouseleave={handleTechFieldLeave}>
-                      <template for:each={heroFloaters} for:item="item">
-                        <span key={item.id} class={item.itemClass} title={item.label}>
-                          <img class="tech-badge__icon" src={item.icon} alt="" loading="lazy" referrerpolicy="no-referrer" />
-                        </span>
-                      </template>
+                    <div class="term-body">
+                      <div class="term-line">
+                        <span class="term-prompt">$</span>
+                        <span class="term-cmd">whoami</span>
+                      </div>
+                      <div class="term-out">{heroSnapshot.whoami}</div>
+
+                      <div class="term-line term-line--spaced">
+                        <span class="term-prompt">$</span>
+                        <span class="term-cmd">cat now.json</span>
+                      </div>
+
+                      <div class="term-json">
+                        <div class="tj-brace">&#123;</div>
+                        <template for:each={nowJsonRows} for:item="row">
+                          <div key={row.id} class="tj-row">
+                            <span class="tj-key">{row.key}</span><span class="tj-sep">:</span>
+                            <span class="tj-val">{row.val}</span><template if:false={row.isLast}><span class="tj-sep">,</span></template>
+                          </div>
+                        </template>
+                        <div class="tj-brace">&#125;</div>
+                      </div>
+
+                      <div class="term-line term-line--spaced term-line--blink">
+                        <span class="term-prompt">$</span>
+                        <span class="term-caret" aria-hidden="true"></span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -90,88 +90,157 @@
           </template>
 
           <template if:true={isAboutPage}>
-            <div class="page inner-page">
+            <div class="page inner-page about-page">
               <header class="page-head" data-reveal>
-                <p class="section-kicker">About</p>
+                <p class="kicker">
+                  <span class="tag">~/about</span>
+                  <span class="sep">·</span>
+                  <span>tanishk · india</span>
+                </p>
                 <h1 class="page-title">A simple overview.</h1>
                 <p class="page-sub">What I do now, what I enjoy learning, and where I want to grow.</p>
               </header>
 
-              <section class="block" data-reveal>
-                <p class="section-kicker">Overview</p>
-                <h2 class="block-title">A simple portfolio built around what I actually do and what I want to keep learning.</h2>
-                <div class="insight-grid">
-                  <template for:each={homeFocusCards} for:item="card">
-                    <article key={card.id} class="insight-card">
-                      <p class="insight-card__eyebrow">{card.eyebrow}</p>
-                      <h3>{card.title}</h3>
-                      <p>{card.body}</p>
-                    </article>
+              <section class="about-intro" data-reveal>
+                <div class="about-intro__prose">
+                  <template for:each={bio.intro} for:item="line">
+                    <p key={line}>{line}</p>
                   </template>
                 </div>
-              </section>
-
-              <section class="block" data-reveal>
-                <h2 class="block-title">Background</h2>
-                <div class="prose">
-                  <p>{bio.background}</p>
-                  <p>{bio.focus}</p>
-                  <p>{bio.direction}</p>
-                </div>
-              </section>
-
-              <section class="block" data-reveal>
-                <p class="section-kicker">How I think</p>
-                <h2 class="block-title">I prefer clear work that solves a real problem and stays easy to improve later.</h2>
-                <div class="process-list">
-                  <template for:each={processCards} for:item="card">
-                    <article key={card.id} class="process-card">
-                      <span class="process-number">{card.number}</span>
-                      <div>
-                        <h3>{card.title}</h3>
-                        <p>{card.body}</p>
+                <div class="about-intro__term">
+                  <div class="term" role="img" aria-label="bio.json snapshot">
+                    <div class="term-bar">
+                      <span class="term-dot term-dot--r"></span>
+                      <span class="term-dot term-dot--y"></span>
+                      <span class="term-dot term-dot--g"></span>
+                      <span class="term-title">bio.json</span>
+                    </div>
+                    <div class="term-body">
+                      <div class="term-json">
+                        <div class="tj-brace">&#123;</div>
+                        <template for:each={bioJsonRows} for:item="row">
+                          <div key={row.id} class="tj-row">
+                            <span class="tj-key">{row.key}</span><span class="tj-sep">:</span>
+                            <span class="tj-val">{row.val}</span><template if:false={row.isLast}><span class="tj-sep">,</span></template>
+                          </div>
+                        </template>
+                        <div class="tj-brace">&#125;</div>
                       </div>
-                    </article>
-                  </template>
+                    </div>
+                  </div>
                 </div>
               </section>
 
-              <section class="block" data-reveal>
-                <h2 class="block-title">Problem-solving style</h2>
-                <ul class="problem-mini">
-                  <template for:each={problemExamples} for:item="example">
-                    <li key={example.id}>
-                      <strong>{example.problem}</strong>
-                      <span>{example.solution} to {example.outcome}</span>
-                    </li>
-                  </template>
-                </ul>
-              </section>
-
-              <section class="block" data-reveal>
-                <h2 class="block-title">Current focus</h2>
-                <ul class="exp-list">
-                  <template for:each={experience} for:item="job">
-                    <li key={job.id} class="exp-card">
-                      <div class="exp-top">
-                        <h3>{job.role}</h3>
-                        <p class="exp-meta">{job.company} - {job.period}</p>
-                      </div>
-                      <ul class="simple-list tight">
-                        <template for:each={job.highlights} for:item="highlight">
-                          <li key={highlight.id}>{highlight.text}</li>
+              <section class="about-section" data-reveal>
+                <header class="about-section__head about-section__head--inline">
+                  <p class="kicker">
+                    <span class="tag">right now</span>
+                    <span class="sep">·</span>
+                    <span>updated {rightNow.updated}</span>
+                  </p>
+                </header>
+                <div class="status-grid">
+                  <template for:each={rightNow.groups} for:item="g">
+                    <div key={g.id} class={g.cellClass}>
+                      <header class="status-cell__head">
+                        <span class={g.dotClass}></span>
+                        <span class="status-cell__label">{g.label}</span>
+                      </header>
+                      <ul>
+                        <template for:each={g.items} for:item="item">
+                          <li key={item}>{item}</li>
                         </template>
                       </ul>
+                    </div>
+                  </template>
+                </div>
+              </section>
+
+              <section class="about-section credentials-section" data-reveal>
+                <header class="about-section__head">
+                  <p class="kicker">
+                    <span class="tag">credentials</span>
+                  </p>
+                  <h2 class="about-section__title">Certifications &amp; trailhead.</h2>
+                </header>
+
+                <template if:true={hasTrailheadLink}>
+                  <a class="trailhead-card" href={trailheadProfile.url} target="_blank" rel="noopener noreferrer">
+                    <span class="trailhead-card__lbl">
+                      <span class="trailhead-card__dot"></span>
+                      Trailblazer profile
+                    </span>
+                    <div class="trailhead-card__body">
+                      <strong class="trailhead-card__title">salesforce.com/trailblazer/{trailheadProfile.handle}</strong>
+                      <span class="trailhead-card__meta">
+                        Rank: {trailheadProfile.rank} ·
+                        Points: {trailheadProfile.points} ·
+                        Badges: {trailheadProfile.badges} ·
+                        Superbadges: {trailheadProfile.superbadges}
+                      </span>
+                    </div>
+                    <span class="trailhead-card__cta">Open Trailblazer →</span>
+                  </a>
+                </template>
+
+                <header class="cert-subhead">
+                  <p class="kicker"><span class="tag">salesforce certifications</span></p>
+                </header>
+                <ul class="cert-grid">
+                  <template for:each={salesforceCertList} for:item="c">
+                    <li key={c.id} class={c.cardClass}>
+                      <span class="cert-card__issuer">{c.issuer}</span>
+                      <h3 class="cert-card__name">{c.name}</h3>
+                      <template if:true={c.code}>
+                        <span class="cert-card__code">{c.code}</span>
+                      </template>
+                      <span class="cert-card__year">{c.year}</span>
+                      <template if:true={c.hasUrl}>
+                        <a class="cert-card__link" href={c.url} target="_blank" rel="noopener noreferrer">View credential →</a>
+                      </template>
+                      <template if:true={c.pending}>
+                        <span class="cert-card__pending">pending — confirm details</span>
+                      </template>
                     </li>
                   </template>
                 </ul>
+
+                <template if:true={hasOtherCertifications}>
+                  <header class="cert-subhead">
+                    <p class="kicker"><span class="tag">other certifications</span></p>
+                  </header>
+                  <ul class="cert-grid">
+                    <template for:each={otherCertList} for:item="c">
+                      <li key={c.id} class={c.cardClass}>
+                        <span class="cert-card__issuer">{c.issuer}</span>
+                        <h3 class="cert-card__name">{c.name}</h3>
+                        <span class="cert-card__year">{c.year}</span>
+                        <template if:true={c.hasUrl}>
+                          <a class="cert-card__link" href={c.url} target="_blank" rel="noopener noreferrer">View credential →</a>
+                        </template>
+                        <template if:true={c.pending}>
+                          <span class="cert-card__pending">pending — confirm details</span>
+                        </template>
+                      </li>
+                    </template>
+                  </ul>
+                </template>
               </section>
 
-              <section class="block" data-reveal>
-                <h2 class="block-title">Right now</h2>
-                <ul class="simple-list">
-                  <template for:each={achievements} for:item="achievement">
-                    <li key={achievement.id}>{achievement.text}</li>
+              <section class="about-section" data-reveal>
+                <header class="about-section__head">
+                  <p class="kicker"><span class="tag">how I think</span></p>
+                  <h2 class="about-section__title">I think like a user, analyse the challenge, fix at the root, and design systems that hold.</h2>
+                </header>
+                <ul class="principle-list">
+                  <template for:each={principles} for:item="p">
+                    <li key={p.id} class="principle-row">
+                      <div class="principle-row__tag">{p.tag}</div>
+                      <div class="principle-row__body">
+                        <h3>{p.title}</h3>
+                        <p>{p.body}</p>
+                      </div>
+                    </li>
                   </template>
                 </ul>
               </section>
@@ -181,77 +250,139 @@
           <template if:true={isSkillsPage}>
             <div class="page">
               <header class="page-head" data-reveal>
+                <p class="kicker">
+                  <span class="tag">~/skills</span>
+                  <span class="sep">·</span>
+                  <span>stack &amp; tooling</span>
+                </p>
                 <h1 class="page-title">What I work with</h1>
                 <p class="page-sub">Salesforce first, with growing interest in backend, data, cloud, and useful tooling.</p>
               </header>
 
-              <section class="service-grid" data-reveal>
-                <template for:each={serviceCards} for:item="card">
-                  <article key={card.id} class="service-card">
-                    <h2>{card.title}</h2>
-                    <p>{card.body}</p>
+              <section class="cat-grid" data-reveal>
+                <template for:each={categories} for:item="cat">
+                  <article key={cat.id} class={cat.cardClass}>
+                    <header class="cat-card__head">
+                      <span class="cat-card__num">{cat.num}</span>
+                      <h2 class="cat-card__title">{cat.title}</h2>
+                    </header>
+                    <p class="cat-card__theme">{cat.theme}</p>
+                    <ul class="cat-card__skills">
+                      <template for:each={cat.skills} for:item="s">
+                        <li key={s.id} class="cat-skill">
+                          <template if:true={s.icon}>
+                            <img class="cat-skill__icon" src={s.icon} alt="" loading="lazy" referrerpolicy="no-referrer" />
+                          </template>
+                          <template if:false={s.icon}>
+                            <span class={s.dotClass} aria-hidden="true"></span>
+                          </template>
+                          <div class="cat-skill__body">
+                            <div class="cat-skill__line">
+                              <span class="cat-skill__name">{s.label}</span>
+                              <span class={s.levelClass}>{s.level}</span>
+                            </div>
+                            <span class="cat-skill__note">{s.note}</span>
+                          </div>
+                        </li>
+                      </template>
+                    </ul>
                   </article>
                 </template>
               </section>
 
-              <template for:each={skillGroups} for:item="group">
-                <section key={group.id} class="group" data-reveal>
-                  <h2 class="group-title">{group.title}</h2>
-                  <ul class="skill-cards">
-                    <template for:each={group.items} for:item="item">
-                      <li key={item.id} class="skill-card">
-                        <img
-                          class="skill-icon"
-                          src={item.icon}
-                          alt=""
-                          width="40"
-                          height="40"
-                          loading="lazy"
-                          referrerpolicy="no-referrer"
-                        />
-                        <span class="skill-label">{item.label}</span>
-                      </li>
-                    </template>
-                  </ul>
-                </section>
-              </template>
+              <section class="skills-playground skills-playground--bottom" data-reveal>
+                <p class="kicker">
+                  <span class="tag">~/playground</span>
+                </p>
+                <div class="tech-stage" aria-hidden="true" onmousemove={handleTechFieldMove} onmouseleave={handleTechFieldLeave}>
+                  <template for:each={heroFloaters} for:item="item">
+                    <span key={item.id} class={item.itemClass} title={item.label}>
+                      <img class="tech-badge__icon" src={item.icon} alt="" loading="lazy" referrerpolicy="no-referrer" />
+                    </span>
+                  </template>
+                </div>
+              </section>
             </div>
           </template>
 
           <template if:true={isProjectsPage}>
-            <div class="page">
+            <div class="page projects-page">
               <header class="page-head" data-reveal>
+                <p class="kicker">
+                  <span class="tag">~/projects</span>
+                  <span class="sep">·</span>
+                  <span>case studies</span>
+                </p>
                 <h1 class="page-title">Projects</h1>
-                <p class="page-sub">Placeholder slots for work I want to present properly later.</p>
+                <p class="page-sub">What I&apos;ve shipped, what I&apos;m drafting next.</p>
               </header>
 
-              <div class="project-filters" data-reveal>
-                <template for:each={projectFilters} for:item="filter">
-                  <span key={filter} class="filter-pill">{filter}</span>
-                </template>
+              <div class="ls-note" data-reveal>
+                <span class="ls-prompt">$</span>
+                <span class="ls-cmd">git status</span>
+                <span class="ls-comment"># 3 shipped · 1 drafting</span>
               </div>
 
               <ul class="project-list">
-                <template for:each={projects} for:item="project">
-                  <li key={project.id} class="project-card" data-reveal>
-                    <div class="project-top">
-                      <h2>{project.name}</h2>
-                      <template if:true={project.period}>
-                        <span class="badge">{project.period}</span>
-                      </template>
-                      <template if:true={project.status}>
-                        <span class="badge badge-muted">{project.status}</span>
-                      </template>
-                    </div>
-                    <p class="desc">{project.summary}</p>
-                    <template if:true={project.bullets.length}>
-                      <ul class="bullets">
-                        <template for:each={project.bullets} for:item="bullet">
-                          <li key={bullet.id}>{bullet.text}</li>
+                <template for:each={projects} for:item="proj">
+                  <li key={proj.id} class={proj.cardClass} data-reveal>
+                    <template if:false={proj.isSkeleton}>
+                      <header class="proj-card__head">
+                        <div class="proj-card__title">
+                          <h2>{proj.name}</h2>
+                          <p class="proj-card__role">{proj.role}</p>
+                        </div>
+                        <span class={proj.statusClass}>{proj.status}</span>
+                      </header>
+
+                      <div class="proj-card__row">
+                        <span class="proj-card__label">Problem</span>
+                        <p>{proj.problem}</p>
+                      </div>
+                      <div class="proj-card__row">
+                        <span class="proj-card__label">Approach</span>
+                        <p>{proj.approach}</p>
+                      </div>
+                      <div class="proj-card__row proj-card__row--result">
+                        <span class="proj-card__label">Result</span>
+                        <p>{proj.result}</p>
+                      </div>
+
+                      <footer class="proj-card__foot">
+                        <ul class="proj-card__stack">
+                          <template for:each={proj.stack} for:item="t">
+                            <li key={t}>{t}</li>
+                          </template>
+                        </ul>
+                        <div class="proj-card__links">
+                          <template for:each={proj.links} for:item="link">
+                            <template if:true={link.external}>
+                              <a key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                            </template>
+                            <template if:false={link.external}>
+                              <a key={link.id} href={link.href}>{link.label}</a>
+                            </template>
+                          </template>
+                        </div>
+                      </footer>
+                    </template>
+
+                    <template if:true={proj.isSkeleton}>
+                      <header class="proj-card__head">
+                        <div class="proj-card__title">
+                          <h2>{proj.name}</h2>
+                          <p class="proj-card__role">{proj.role}</p>
+                        </div>
+                        <span class={proj.statusClass}>{proj.status}</span>
+                      </header>
+                      <p class="proj-card__reserved-line">{proj.reservedLine}</p>
+                      <p class="proj-card__skeleton-note">{proj.skeletonNote}</p>
+                      <ul class="proj-card__stack proj-card__stack--muted">
+                        <template for:each={proj.stack} for:item="t">
+                          <li key={t}>{t}</li>
                         </template>
                       </ul>
                     </template>
-                    <p class="stack">{project.stack}</p>
                   </li>
                 </template>
               </ul>
@@ -261,33 +392,83 @@
           <template if:true={isContactPage}>
             <div class="page">
               <header class="page-head" data-reveal>
-                <h1 class="page-title">Contact</h1>
-                <p class="page-sub">A cleaner place to reach out for opportunities, collaboration, and practical engineering conversations.</p>
+                <p class="kicker">
+                  <span class="tag">~/contact</span>
+                  <span class="sep">·</span>
+                  <span>get in touch</span>
+                </p>
+                <h1 class="page-title contact-title">Let&apos;s <span class="contact-title__accent">talk.</span></h1>
               </header>
 
-              <section class="block contact-spotlight" data-reveal>
-                <div class="contact-cards contact-cards--featured">
-                  <template for:each={contactMethods} for:item="item">
-                    <a key={item.id} class={item.cardClass} href={item.href} target={item.target} rel={item.rel}>
-                      <span class={item.iconClass} aria-hidden="true"></span>
-                      <span class="contact-card__body">
-                        <span class="cc-label">{item.label}</span>
-                        <strong class="contact-card__value">{item.value}</strong>
-                        <span class="contact-card__meta">{item.meta}</span>
-                      </span>
-                      <span class="cc-arrow">{item.cta}</span>
-                    </a>
-                  </template>
-                </div>
+              <section class="contact-grid" data-reveal>
+                <a class="email-card" href={mailtoHref}>
+                  <span class="email-card__lbl"><span class="email-card__dot"></span>Primary · email</span>
+                  <h3 class="email-card__addr">{contact.email}</h3>
+                  <p class="email-card__sub">The best place for opportunities, project discussion, and thoughtful follow-ups.</p>
+                  <span class="email-card__cta">Send email →</span>
+                </a>
+
+                <ul class="channel-list">
+                  <li class="channel">
+                    <span class="channel__icon channel__icon--linkedin" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                    </span>
+                    <div class="channel__body">
+                      <span class="channel__label">LinkedIn</span>
+                      <span class="channel__name">Tanishk Raikwar</span>
+                    </div>
+                    <a class="channel__cta" href={contact.linkedin} target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
+                  </li>
+
+                  <li class="channel">
+                    <span class="channel__icon channel__icon--github" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.18-.02-2.13-3.2.7-3.87-1.36-3.87-1.36-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.14 0 .3.21.66.79.55 4.57-1.52 7.86-5.83 7.86-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
+                    </span>
+                    <div class="channel__body">
+                      <span class="channel__label">GitHub</span>
+                      <span class="channel__name">@{githubHandle}</span>
+                    </div>
+                    <a class="channel__cta" href={contact.github} target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+                  </li>
+
+                  <li class="channel">
+                    <span class="channel__icon channel__icon--phone" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                    <div class="channel__body">
+                      <span class="channel__label">Phone</span>
+                      <span class="channel__name">{profile.phone}</span>
+                    </div>
+                    <a class="channel__cta" href={telHref}>Call →</a>
+                  </li>
+                </ul>
               </section>
 
-              <section class="block" data-reveal>
-                <p class="section-kicker">Worth reaching out for</p>
-                <div class="insight-grid contact-topic-grid">
-                  <template for:each={contactTopics} for:item="item">
-                    <article key={item.id} class="insight-card contact-topic-card">
-                      <h3>{item.title}</h3>
-                      <p>{item.body}</p>
+              <section class="recruiter-section" data-reveal>
+                <header class="about-section__head about-section__head--inline">
+                  <p class="kicker">
+                    <span class="tag">for recruiters &amp; hiring managers</span>
+                    <span class="sep">·</span>
+                    <span>quick snapshot</span>
+                  </p>
+                </header>
+
+                <div class="hr-status">
+                  <span class="hr-status__dot" aria-hidden="true"></span>
+                  <div class="hr-status__body">
+                    <strong class="hr-status__label">Open to opportunities</strong>
+                  </div>
+                </div>
+
+                <div class="hr-grid">
+                  <template for:each={recruiterSnapshot} for:item="card">
+                    <article key={card.id} class="hr-card">
+                      <span class="hr-card__kicker">{card.kicker}</span>
+                      <ul class="hr-card__list">
+                        <template for:each={card.items} for:item="line">
+                          <li key={line}>{line}</li>
+                        </template>
+                      </ul>
                     </article>
                   </template>
                 </div>
@@ -298,8 +479,18 @@
       </main>
 
       <footer class="site-foot">
-        <p>Tanishk Raikwar</p>
-        <p class="sub">Salesforce, Python, data, and tools</p>
+        <div class="foot-left">
+          <a class="wordmark" href="/" data-route="/" onclick={handleRouteClick} aria-label="Home — Tanishk Raikwar">
+            <span>tanishk raikwar</span><span class="dot">.</span>
+          </a>
+          <p class="sub">Salesforce, Python, data, and tools</p>
+        </div>
+        <div class="foot-right">
+          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={mailtoHref}>Email</a>
+        </div>
+        <div class="foot-meta">© 2026 · built with LWR + LWC</div>
       </footer>
     </div>
   </div>
