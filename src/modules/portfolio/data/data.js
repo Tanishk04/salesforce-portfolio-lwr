@@ -36,7 +36,7 @@ export const contact = {
   linkedin: 'https://www.linkedin.com/in/tanishk-raikwar-a635201a6/',
   github: 'https://github.com/Tanishk04',
   trailhead: 'https://www.salesforce.com/trailblazer/fx47e4cowv06hhtjzh',
-  resume: '/public/assets/Tanishk_Raikwar_Resume.pdf',
+  resume: 'https://docs.google.com/document/d/1g_71fNbasq-3qUjl5D4zToyHO5C7yOkv/edit?usp=sharing',
 };
 
 export const about = {
