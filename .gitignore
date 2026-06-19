@@ -4,3 +4,10 @@ site
 .DS_Store
 *.log
 screenshots/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
