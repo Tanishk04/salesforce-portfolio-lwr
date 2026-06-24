@@ -497,7 +497,7 @@ export default class App extends LightningElement {
   }
 
   get heroLead() {
-    return 'Apex, LWC, Flows, Aura, and integrations by day — AI agents, MCP servers, RAG patterns, and system design on the side, figuring out where they actually pay off.';
+    return 'Apex, LWC, Flows, Aura, and integrations by day & learning AI engineering and vibe coding my way.';
   }
 
   get isHomePage() {

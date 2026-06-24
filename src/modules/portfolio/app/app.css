@@ -1206,8 +1206,8 @@
 @media (max-width: 720px) {
   .side-dock {
     width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
     margin-left: 0;
   }
 
@@ -1226,10 +1226,16 @@
   }
 
   .nav-link {
-    flex-direction: column;
-    gap: 0.32rem;
-    padding: 0.75rem 0.6rem;
-    min-width: 4.4rem;
+    flex-direction: row;
+    gap: 0;
+    padding: 6px 7px;
+    min-width: auto;
+    font-size: 13.5px;
+  }
+
+  .nav-link.is-cta {
+    padding: 6px 8px;
+    margin-left: 3px;
   }
 
   .nav-text {
@@ -1515,12 +1521,13 @@
   display: flex;
   gap: 4px;
   padding-left: 16px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-.tj-key { color: var(--term-key); }
-.tj-val { color: var(--term-str); }
-.tj-sep { color: var(--term-text); opacity: 0.7; }
+.tj-key { color: var(--term-key); white-space: nowrap; }
+.tj-val { color: var(--term-str); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tj-sep { color: var(--term-text); opacity: 0.7; white-space: nowrap; }
 
 .term-caret {
   display: inline-block;
@@ -1538,6 +1545,66 @@
 
 @media (prefers-reduced-motion: reduce) {
   .term-caret { animation: none; }
+}
+
+/* ============================================================
+   DESIGN ELEVATION — polish pass
+   ============================================================ */
+
+/* 1. Nav: visible dot under active non-CTA links */
+.nav-link.is-active:not(.is-cta)::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.6;
+}
+
+/* 2. Hero H1 accent — stronger green highlight */
+.hero-h1 .accent {
+  background: linear-gradient(180deg, transparent 54%, rgba(22, 163, 74, 0.38) 54%);
+}
+
+/* 3. Hero primary CTA — depth + hierarchy */
+.hero-ctas .btn-primary {
+  box-shadow: 0 2px 12px rgba(28, 25, 23, 0.15), 0 0 0 1px rgba(28, 25, 23, 0.08);
+}
+
+.hero-ctas .btn-primary:hover {
+  box-shadow: 0 4px 20px rgba(28, 25, 23, 0.22), 0 0 0 1px rgba(28, 25, 23, 0.06);
+}
+
+/* 4. Principle rows — permanent hairline rail, darkens on hover */
+.principle-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--hairline);
+  border-radius: 1px;
+  transition: background-color 220ms ease;
+}
+
+.principle-row:hover::before {
+  background: var(--ink-2);
+}
+
+/* 5. Project result row — green left accent */
+.proj-card__row--result {
+  border-left: 2px solid rgba(22, 163, 74, 0.42);
+  padding-left: 12px;
+}
+
+/* 6. About page — more breathing room between sections */
+.about-section {
+  margin-top: 68px;
 }
 
 /* ============================================================
@@ -2051,8 +2118,9 @@
   display: grid;
   grid-template-columns: 130px 1fr;
   gap: 32px;
-  padding: 24px 4px;
+  padding: 24px 4px 24px 20px;
   border-bottom: 1px solid var(--hairline);
+  position: relative;
 }
 
 .principle-row__tag {
@@ -2085,7 +2153,7 @@
   .principle-row {
     grid-template-columns: 1fr;
     gap: 10px;
-    padding: 22px 2px;
+    padding: 22px 2px 22px 20px;
   }
 }
 
@@ -2359,7 +2427,10 @@
 .cert-card:hover {
   border-color: var(--ink-2);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 0 0 1px rgba(28, 25, 23, 0.04),
+    0 8px 24px -8px rgba(28, 25, 23, 0.12),
+    0 28px 52px -20px rgba(28, 25, 23, 0.09);
 }
 
 .cert-card--pending {
@@ -2513,7 +2584,10 @@
 .proj-card:hover {
   border-color: var(--ink-2);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 0 0 1px rgba(28, 25, 23, 0.04),
+    0 8px 24px -8px rgba(28, 25, 23, 0.12),
+    0 28px 52px -20px rgba(28, 25, 23, 0.09);
 }
 
 .proj-card__head {
@@ -3074,7 +3148,10 @@
 .hr-card:hover {
   border-color: var(--ink-2);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 0 0 1px rgba(28, 25, 23, 0.04),
+    0 8px 24px -8px rgba(28, 25, 23, 0.12),
+    0 28px 52px -20px rgba(28, 25, 23, 0.09);
 }
 
 .hr-card__kicker {

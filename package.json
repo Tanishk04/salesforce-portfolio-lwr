@@ -14,7 +14,9 @@
     "build:prod-compat": "lwr build --clean --mode prod-compat",
     "start": "lwr start",
     "stage": "npm run build && npm run start",
-    "stage:prod-compat": "npm run build:prod-compat && npm run start"
+    "stage:prod-compat": "npm run build:prod-compat && npm run start",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "@lwc/engine-dom": "^9.1.1",
@@ -24,7 +26,8 @@
   },
   "devDependencies": {
     "playwright": "^1.60.0",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "wrangler": "^4.104.0"
   },
   "engines": {
     "node": ">=22.0.0"
