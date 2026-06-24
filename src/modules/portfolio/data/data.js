@@ -25,7 +25,7 @@ export const heroSnapshot = {
   now: {
     shipping: 'apex, lwc, flows, aura, integrations',
     learning: 'data cloud, agentforce',
-    exploring: 'ai agents, mcp, rag, system design',
+    exploring: 'ai engineering, vibe coding, llms, mcp',
     updated: '2026-05',
   },
   email: 'tr15042001@gmail.com',
